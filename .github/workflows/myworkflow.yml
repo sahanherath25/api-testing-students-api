@@ -8,9 +8,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      DB_URL:${{secrets.DB_URL}},
-      PASSWORD:${{secrets.PASSWORD}},
-      UNAME:${{secrets.UNAME}}
+      DB_URL: ${{secrets.DB_URL}}
+      PASSWORD: ${{secrets.PASSWORD}}
+      UNAME: ${{secrets.UNAME}}
 
     steps:
       - name: Clone the COde

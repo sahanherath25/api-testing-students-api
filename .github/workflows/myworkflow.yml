@@ -8,8 +8,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      DB_URL:${{secrets.DB_URL}}
-      PASSWORD:${{secrets.PASSWORD}}
+      DB_URL:${{secrets.DB_URL}},
+      PASSWORD:${{secrets.PASSWORD}},
       UNAME:${{secrets.UNAME}}
 
     steps:

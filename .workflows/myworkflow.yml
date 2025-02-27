@@ -1,0 +1,29 @@
+workflow: "API Testing"
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      DB_URL:${{secrets.DB_URL}}
+      PASSWORD:${{secrets.PASSWORD}}
+      UNAME:${{secrets.UNAME}}
+
+    steps:
+      - name: Clone the COde
+        uses: actions/checkout@v4
+
+      - name: Install Node JS
+        uses: actions/setup-node@v3
+        with:
+          node-version:"18"
+
+      - name: Install Dependencies
+        run: npm i
+
+      - name: RUN API TESTING
+        run: npm run test
+

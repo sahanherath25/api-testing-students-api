@@ -7,7 +7,7 @@
     "test": "nodemon --exec mocha --timeout 5000 ",
     "test:single": "nodemon --exec mocha --timeout 5000 test/zAll_test.js ",
     "test:report": "mocha test --reporter mochawesome --require mochawesome/register   ",
-    "start": "nodemon server.js",
+    "start": "cross-env NODE_ENV='production' node server.js",
     "start:dev": "cross-env NODE_ENV='development' nodemon server.js",
     "start:prod": "cross-env NODE_ENV='production' nodemon server.js",
     "all": "npm-run-all --parallel start test:single"

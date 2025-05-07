@@ -11,7 +11,7 @@ app.use(cors());
 
 const userRouter=require("./router/userRouter")
 
-app.use("api-testing-students-api.vercel.app/api/v1/users",userRouter)
+app.use("https://api-testing-students-api.vercel.app/api/v1/users",userRouter)
 
 
 

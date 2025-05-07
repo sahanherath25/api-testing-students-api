@@ -9,7 +9,6 @@ describe("Crete User",()=>{
             "password":"emma123",
             "passwordConfirm":"emma123"
         }
-
         try {
             const user=await User.create(newUser);
             // console.log("NEW USER CREAED IS ",user)
@@ -20,5 +19,5 @@ describe("Crete User",()=>{
 
     });
 
-
 })
+

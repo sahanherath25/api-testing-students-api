@@ -30,7 +30,10 @@ exports.getAllUsers = async (req, res, next) => {
 
 exports.getOneUser = async (req, res, next) => {
 
-    const userEmail = req.body.email;
+    let userEmail = req.body.email;
+
+    console.log("ËMAIL IN BODY ", userEmail)
+
 
     console.log("ËMAIL IN BODY ", userEmail)
 
@@ -40,28 +43,41 @@ exports.getOneUser = async (req, res, next) => {
         // const user = await User.findById(userId)
 
         //TODO Find by email provided
-        const {email} = req.body;
-        const user = await User.find({email})
-        console.log("USER FOUND ", user)
+        let {email} = req.body;
+        if (email) {
+            const user = await User.findOne({email})
+            if (user.length === 0) {
+                // next(new AppError("User Not Found ",404))
+                res.status(404).json({
+                    status: "fail",
+                    length: user.length,
+                    data: {
+                        data: user
+                    }
+                })
+            } else {
+                res.status(200).json({
+                    status: "success",
+                    data: {
+                        user
+                    }
+                })
 
-        if (user.length === 0) {
-            // next(new AppError("User Not Found ",404))
-            res.status(404).json({
-                status: "fail",
-                length: user.length,
-                data: {
-                    data: user
-                }
-            })
-        } else {
-            res.status(200).json({
-                status: "success",
-                data: {
-                    user
-                }
-            })
-
+            }
         }
+
+        const id = req.params.id;
+        const user = await User.findById(id);
+
+        console.log("id")
+        console.log("USER FOUND ", user)
+        res.status(200).json({
+            status: "success",
+            data: {
+                user
+            }
+        })
+
 
     } catch (e) {
         res.status(401).json({
@@ -80,33 +96,33 @@ exports.deleteUser = async (req, res, next) => {
     try {
 
         const userToDelete = req.params.id
-        const user = await User.findByIdAndDelete({_id: userToDelete});
+        const user = await User.findByIdAndDelete(userToDelete);
 
-        console.log("USER FOUND ",user);
+        console.log("USER Deleted ", user);
 
-        if(!user){
+        if (!user) {
+            return next(new AppError("User Not Found ", 404))
+            // res.status(404).json({
+            //     status: "fail",
+            // })
 
-            next(new AppError("User Not Found ",404))
+        } else {
 
-            res.status(404).json({
-                status: "fail",
-                data: {
-                    user
-                }
-            })
-
-        }else {
-            res.status(204).json({
+            res.status(200).json({
                 status: "success",
                 data: {
-                    user
+                   user
                 }
             })
 
+
+            // res.status(204).json({
+            //     status: "success",
+            //     data: {
+            //         user
+            //     }
+            // })
         }
-
-
-
 
     } catch (e) {
 
@@ -114,6 +130,7 @@ exports.deleteUser = async (req, res, next) => {
     }
 
 }
+
 exports.addNewUser = async (req, res, next) => {
 
     const userData = req.body;
@@ -123,7 +140,7 @@ exports.addNewUser = async (req, res, next) => {
     try {
         const user = await User.create(userData)
 
-        res.status(200).json({
+        res.status(201).json({
             status: "success",
             data: {
                 user
@@ -146,22 +163,21 @@ exports.addNewUser = async (req, res, next) => {
 exports.updateUser = async (req, res, next) => {
 
     const userId = req.params.id;
-
-    const {email,name}=req.body;
-
+    const {email, name} = req.body;
     console.log("USER IS ", userId);
 
     try {
-        const user = await User.findOneAndUpdate({_id:req.params.id},{
-            $set:{name:name,email:email}
-        },{new:true})
+        const user = await User.findOneAndUpdate({_id: req.params.id}, {
+            $set: {name: name, email: email}
+        }, {new: true})
 
-        res.status(201).json({
+        res.status(200).json({
             status: "success",
             data: {
                 user
             }
         })
+
     } catch (e) {
 
         console.log("Error ", e)
@@ -173,5 +189,6 @@ exports.updateUser = async (req, res, next) => {
         })
     }
 
-
 }
+
+
